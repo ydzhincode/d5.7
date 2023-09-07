@@ -1,0 +1,69 @@
+>>>py manage.py makemigrations
+>>>py manage.py migrate
+>>>py manage.py shell
+>>> from news.models import *
+>>> user1 = User.objects.create(username='Profi', first_name='Ivan')
+>>> Author.objects.create(authorUser=user1)
+>>> user2 = User.objects.create(username='Nick', first_name='Oleg')
+>>> Author.objects.create(authorUser=user2)
+>>> Category.objects.create(name='IT')
+>>> Category.objects.create(name='Education')
+>>> Category.objects.create(name='Game')
+>>> Category.objects.create(name='New')
+>>> Post.objects.create(author=Author.objects.get(authorUser=User.objects.get(username='Profi')), categoryType='NW', title='title1', text='learning text')
+>>> Post.objects.create(author=Author.objects.get(authorUser=User.objects.get(username='Profi')), categoryType='AR', title='title2', text='gaming text')
+>>> Post.objects.create(author=Author.objects.get(authorUser=User.objects.get(username='Nick')), categoryType='AR', title='title3', text='about text')
+>>> p1 = Post.objects.get(pk=1)
+>>> p2 = Post.objects.get(pk=2)  
+>>> p3 = Post.objects.get(pk=3)
+>>> c1 = Category.objects.get(name='IT')
+>>> c2 = Category.objects.get(name='Education')
+>>> c3 = Category.objects.get(name='New')
+>>> p1.postCategory.add(c1, c2)
+>>> p2.postCategory.add(c1)
+>>> p3.postCategory.add(c1, c3)
+>>> Comment.objects.create(commentUser=User.objects.get(username='Profi'), commentPost = Post.objects.get(pk=1), text='comment text1')
+>>> Comment.objects.create(commentUser=User.objects.get(username='Profi'), commentPost = Post.objects.get(pk=1), text='comment text1')
+>>> Comment.objects.create(commentUser=User.objects.get(username='Nick'), commentPost = Post.objects.get(pk=2), text='comment text3')
+>>> Comment.objects.create(commentUser=User.objects.get(username='Nick'), commentPost = Post.objects.get(pk=3), text='comment text4')
+>>> Post.objects.get(pk=1).like()
+>>> Post.objects.get(pk=1).like()
+>>> Post.objects.get(pk=2).like()
+>>> Post.objects.get(pk=3).like()
+>>> Post.objects.get(pk=3).like()                                                                              
+>>> Post.objects.get(pk=3).like()
+>>> Post.objects.get(pk=3).like()
+>>> Post.objects.get(pk=1).dislike()
+>>> Post.objects.get(pk=2).dislike()
+>>> Comment.objects.get(pk=1).like()
+>>> Comment.objects.get(pk=1).like()
+>>> Comment.objects.get(pk=2).like()
+>>> Comment.objects.get(pk=3).like()  
+>>> Comment.objects.get(pk=3).dislike() 
+>>> Comment.objects.get(pk=2).dislike() 
+>>> Comment.objects.get(pk=2).like()          
+>>> Comment.objects.get(pk=2).like()
+>>> Comment.objects.get(pk=3).like()
+>>> Comment.objects.get(pk=1).like()  
+>>> Comment.objects.get(pk=1).like()
+>>> Author.objects.get(authorUser = User.objects.get(username="Profi")).update_rating()
+>>> Author.objects.get(authorUser = User.objects.get(username="Nick")).update_rating()  
+>>> a = Author.objects.get(authorUser = User.objects.get(username="Profi"))
+>>> b = Author.objects.get(authorUser = User.objects.get(username="Nick"))
+>>> a.ratingAuthor
+>>> b.ratingAuthor
+>>> best = Author.objects.all().order_by('-ratingAuthor').values('authorUser', 'ratingAuthor') [0] 
+>>> user = User.objects.get(pk=best['authorUser']) 
+>>> print(str(user) + '  ' + str(best['ratingAuthor']))
+>>> best_article = Post.objects.all().order_by('-rating').values() [0] 
+>>> text += str(best_article['dateCreation'])         
+>>> text += '  ' + str(User.objects.get(pk=best_article['author_id']))
+>>> text += ' рейтинг ' +  str(best_article['rating']) +'; ' 
+>>> text += str( best_article['title']) + '  '                        
+>>> text += Post.objects.get(id= best_article['id']).preview() 
+>>> Comment.objects.values().get(commentPost_id=best_article['id']) 
+
+
+
+
+
